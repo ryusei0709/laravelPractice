@@ -10,7 +10,7 @@ use App\Models\Task;
 class TaskTest extends TestCase
 {
 
-    use RefreshDatabase;
+    // use RefreshDatabase;
 
     /**
      * A basic test example.
@@ -23,11 +23,15 @@ class TaskTest extends TestCase
     {
 
         $tasks = Task::factory()->count(10)->create();
+
         // Task::factory(10)->create()
         // dd($tasks->toArray());
 
         $response = $this->get('/');
 
         $response->assertOk();
+
+        // ->assertJsonCount($tasks->count());
+
     }
 }
