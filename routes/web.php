@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('{all}', function () {
+    return view('index');
+})->where(['all' => '.*']);
 
 Route::get('/todo', [App\Http\Controllers\TodoController::class, 'index'])->name('todo');
 Route::get('/regist', [App\Http\Controllers\TodoController::class, 'regist'])->name('regist');

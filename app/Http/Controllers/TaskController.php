@@ -18,6 +18,8 @@ class TaskController extends Controller
 
     public function index()
     {
+        // abort(500);
+        // return [];
         return Task::orderByDesc('id')->get();
     }
 
