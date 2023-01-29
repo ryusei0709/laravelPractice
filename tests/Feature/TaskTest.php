@@ -6,11 +6,23 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 // use Illuminate\Database\Seeder;
 use Tests\TestCase;
 use App\Models\Task;
+use App\Models\User;
 
 class TaskTest extends TestCase
 {
 
     use RefreshDatabase;
+
+    // テストが実行された際に最初に実行されるメソッド
+    public function setUp(): void
+    {
+        parent::setUp();
+        // exit;
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
+
+    }
 
     /**
      * A basic test example.

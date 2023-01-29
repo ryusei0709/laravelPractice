@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -98,4 +99,16 @@ class TaskController extends Controller
         return $task->delete()
         ? response()->json($task) : response()->json([],500);
     }
+
+
+    // api/tasks/update-done/9
+    public function updateDone(Task $task, Request $req)
+    {
+
+        // abort(500);
+        $task->is_done = $req->is_done;
+
+        return $task->update() ? response()->json($task) : response()->json([], 500);
+    }
+
 }

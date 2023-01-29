@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useEffect } from "react";
 import {
     BrowserRouter,
     Switch,
@@ -9,7 +9,21 @@ import TaskPage from "./pages/tasks";
 import LoginPage from "./pages/login";
 import HelpPage from "./pages/help";
 
+import axios from "axios";
+
+// useEffectはレンダーの際に実行される関数
+
 const Router = () => {
+
+    useEffect(() => {
+        // axios.post('/api/login',{
+        //     'email': 'test@gmai.com',
+        //     'password': '12345678'
+        // }).then(response => {
+        //     console.log(response);
+        // })
+    },[]);
+
     return (
         <BrowserRouter>
             <header className="global-head">
