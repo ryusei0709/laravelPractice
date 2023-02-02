@@ -1,53 +1,81 @@
-import React,{ useEffect } from "react";
+import React, { useEffect } from "react";
 import {
     BrowserRouter,
     Switch,
     Route,
-    Link
+    Link,
+    RouterProps,
+    RouteProps,
+    Redirect
 } from "react-router-dom";
 import TaskPage from "./pages/tasks";
 import LoginPage from "./pages/login";
 import HelpPage from "./pages/help";
+import { useLogout, useUser } from "./pages/queries/AuthQuery";
+import { useAuth } from "./hooks/AuthContext";
 
 import axios from "axios";
 
-// useEffectはレンダーの際に実行される関数
 
 const Router = () => {
 
+    const logout = useLogout();
+    const { isAuth, setIsAuth } = useAuth();
+    const { isLoading, data: authUser } = useUser();
+
+    // useEffectはレンダーの際に実行される関数
     useEffect(() => {
-        // axios.post('/api/login',{
-        //     'email': 'test@gmai.com',
-        //     'password': '12345678'
-        // }).then(response => {
-        //     console.log(response);
-        // })
-    },[]);
+        if(authUser) {
+            setIsAuth(true);
+        }
+    }, [authUser]);
+
+    const GuardRoute = (props: RouteProps) => {
+        if(!isAuth) return <Redirect to="/login" />
+            return <Route {...props} />
+    }
+
+    const LoginRoute = (props: RouteProps) => {
+        if(!isAuth) return <Redirect to="/" />
+            return <Route {...props} />
+    }
+
+    const navigation = (
+        <header className="global-head">
+            <ul>
+                <li><Link to="/">ホーム</Link></li>
+                <li><Link to="/help">ヘルプ</Link></li>
+                <li onClick={(() => logout.mutate())} ><span>ログアウト</span></li>
+            </ul>
+        </header>
+    );
+
+    const loginNavigation = (
+        <header className="global-head">
+            <ul>
+                <li><Link to="/help">ヘルプ</Link></li>
+                <li><Link to="/login">ログイン</Link></li>
+            </ul>
+        </header>
+    );
+
+  
+
 
     return (
         <BrowserRouter>
-            <header className="global-head">
-                <ul>
-                    {/* <li><a href="/">ホーム</a></li>
-                    <li><a href="/help">ヘルプ</a></li>
-                    <li><a href="/login">ログイン</a></li> */}
-                    <li><Link to="/">ホーム</Link></li>
-                    <li><Link to="/help">ヘルプ</Link></li>
-                    <li><Link to="/login">ログイン</Link></li>
-                    <li><span>ログアウト</span></li>
-                </ul>
-            </header>
+                { isAuth ? navigation : loginNavigation }
             <div>
                 <Switch>
                     <Route path="/help">
                         <HelpPage />
                     </Route>
-                    <Route path="/login">
+                    <LoginRoute path="/login">
                         <LoginPage />
-                    </Route>
-                    <Route path="/">
+                    </LoginRoute>
+                    <GuardRoute path="/">
                         <TaskPage />
-                    </Route>
+                    </GuardRoute>
                 </Switch>
             </div>
         </BrowserRouter>

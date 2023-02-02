@@ -30,7 +30,7 @@ const TaskItem: React.VFC<Props> = ({ task }) => {
         setEditTitle(e.target.value);
     }
 
-    const handleUpdate = (e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLFormElement>) => {
+    const handleUpdate = (e:any) => {
         e.preventDefault();
 
         if (!editTitle) {
